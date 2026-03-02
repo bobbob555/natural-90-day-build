@@ -3,91 +3,213 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>90 Day Builder</title>
+<title>90 Day Builder ELITE</title>
+
 <style>
-body { font-family: Arial; padding:20px; background:#111; color:white; }
-input, button, textarea { width:100%; padding:10px; margin:5px 0; border-radius:8px; border:none; }
-button { background:#00ff99; font-weight:bold; }
-.card { background:#222; padding:15px; border-radius:12px; margin-bottom:15px; }
-h1 { text-align:center; }
+body{margin:0;font-family:system-ui;background:#0f0f0f;color:white;}
+header{padding:18px;text-align:center;font-weight:bold;background:#121212;border-bottom:1px solid #222;}
+nav{display:flex;justify-content:space-around;background:#111;padding:12px;position:fixed;bottom:0;width:100%;border-top:1px solid #222;}
+nav button{background:none;border:none;color:white;font-size:13px;}
+.page{display:none;padding:20px;padding-bottom:100px;}
+.active{display:block;}
+.card{background:#1a1a1a;padding:15px;border-radius:14px;margin-bottom:15px;}
+input,select,textarea{width:100%;padding:10px;margin-top:6px;border-radius:10px;border:none;background:#222;color:white;}
+button.primary{background:#00ff99;border:none;padding:12px;border-radius:12px;margin-top:12px;font-weight:bold;}
+h2{margin-top:0;}
+.badge{padding:6px 10px;border-radius:10px;background:#00ff99;color:black;display:inline-block;margin-top:5px;font-size:12px;}
 </style>
 </head>
+
 <body>
 
-<h1>90 Day Builder</h1>
+<header>90 Day Builder ELITE</header>
 
+<!-- QUIZ -->
+<div id="quiz" class="page active">
+<h2>Initial Performance Assessment</h2>
 <div class="card">
+
+<label>Training Experience</label>
+<select id="experience">
+<option>Beginner</option>
+<option>Intermediate</option>
+<option>Advanced</option>
+</select>
+
+<label>Primary Goal</label>
+<select id="goal">
+<option>Physique (Muscle)</option>
+<option>Strength</option>
+<option>Athletic Hybrid</option>
+</select>
+
+<label>Equipment</label>
+<select id="equipment">
+<option>Bodyweight Only</option>
+<option>Bodyweight + Dumbbells</option>
+<option>Full Gym</option>
+</select>
+
+<label>Bodyweight (lbs)</label>
+<input id="bw" type="number">
+
+<label>Max Pushups</label>
+<input id="pushups" type="number">
+
+<label>Max Pull-Ups</label>
+<input id="pullups" type="number">
+
+<label>Broad Jump (inches)</label>
+<input id="jump" type="number">
+
+<label>Plank (seconds)</label>
+<input id="plank" type="number">
+
+<button class="primary" onclick="initialize()">Start 90 Day Build</button>
+</div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="page">
 <h2>Dashboard</h2>
-<input id="day" placeholder="Day #">
-<input id="weight" placeholder="Bodyweight">
-<input id="protein" placeholder="Protein Goal">
-<input id="calories" placeholder="Calories Goal">
-<button onclick="saveDashboard()">Save Dashboard</button>
-</div>
-
 <div class="card">
-<h2>Workout Log</h2>
-<textarea id="workout" rows="6" placeholder="Log workout here..."></textarea>
-<button onclick="saveWorkout()">Save Workout</button>
-</div>
-
-<div class="card">
-<h2>PR Log</h2>
-<textarea id="pr" rows="4" placeholder="New PRs..."></textarea>
-<button onclick="savePR()">Save PR</button>
-</div>
-
-<div class="card">
-<h2>Streak</h2>
+<p id="dayDisplay"></p>
+<p id="tierDisplay"></p>
 <p id="streakDisplay"></p>
-<button onclick="increaseStreak()">+1 Perfect Day</button>
-<button onclick="resetStreak()">Reset</button>
+<p id="challengeDisplay"></p>
+<button class="primary" onclick="increaseDay()">Complete Day</button>
 </div>
+</div>
+
+<!-- TRAINING -->
+<div id="training" class="page">
+<h2>Today's Focus</h2>
+<div class="card">
+<p id="workoutDisplay"></p>
+</div>
+</div>
+
+<!-- PROGRESS -->
+<div id="progress" class="page">
+<h2>Performance</h2>
+<div class="card">
+<p id="baselineDisplay"></p>
+<p id="nextTestDisplay"></p>
+</div>
+</div>
+
+<nav id="navbar" style="display:none;">
+<button onclick="showPage('dashboard')">Home</button>
+<button onclick="showPage('training')">Train</button>
+<button onclick="showPage('progress')">Progress</button>
+</nav>
 
 <script>
 
-function saveDashboard() {
-localStorage.setItem("day", document.getElementById("day").value);
-localStorage.setItem("weight", document.getElementById("weight").value);
-localStorage.setItem("protein", document.getElementById("protein").value);
-localStorage.setItem("calories", document.getElementById("calories").value);
-alert("Dashboard Saved");
+function initialize(){
+let data={
+experience:experience.value,
+goal:goal.value,
+equipment:equipment.value,
+bw:bw.value,
+pushups:pushups.value,
+pullups:pullups.value,
+jump:jump.value,
+plank:plank.value,
+day:1,
+streak:0
+};
+localStorage.setItem("data",JSON.stringify(data));
+generateChallenge();
+generateWorkout();
+document.getElementById("quiz").classList.remove("active");
+document.getElementById("dashboard").classList.add("active");
+document.getElementById("navbar").style.display="flex";
+load();
 }
 
-function saveWorkout() {
-localStorage.setItem("workout", document.getElementById("workout").value);
-alert("Workout Saved");
+function load(){
+let d=JSON.parse(localStorage.getItem("data"));
+if(!d)return;
+
+dayDisplay.innerText="Day: "+d.day+"/90";
+streakDisplay.innerText="Streak: "+d.streak;
+
+tierDisplay.innerHTML="Pull-Up Tier: "+getTier(d.pullups)+" <div class='badge'>"+getTier(d.pullups)+"</div>";
+
+challengeDisplay.innerText="Weekly Challenge: "+localStorage.getItem("challenge");
+
+baselineDisplay.innerText="Baseline Pushups: "+d.pushups+" | Pullups: "+d.pullups+" | Jump: "+d.jump+" | Plank: "+d.plank+"s";
+
+nextTestDisplay.innerText="Next Test Day: "+getNextTest(d.day);
+
+workoutDisplay.innerText=localStorage.getItem("workout");
 }
 
-function savePR() {
-localStorage.setItem("pr", document.getElementById("pr").value);
-alert("PR Saved");
+function getTier(pullups){
+if(pullups>=25)return "Savage";
+if(pullups>=20)return "Elite";
+if(pullups>=15)return "Advanced";
+if(pullups>=10)return "Trained";
+if(pullups>=5)return "Novice";
+return "Beginner";
 }
 
-function increaseStreak() {
-let streak = localStorage.getItem("streak") || 0;
-streak++;
-localStorage.setItem("streak", streak);
-document.getElementById("streakDisplay").innerText = "Current Streak: " + streak;
+function increaseDay(){
+let d=JSON.parse(localStorage.getItem("data"));
+d.day++;
+d.streak++;
+localStorage.setItem("data",JSON.stringify(d));
+
+if(d.day==30||d.day==60||d.day==90){
+alert("🔥 Performance Re-Test Day! Re-measure everything.");
 }
 
-function resetStreak() {
-localStorage.setItem("streak", 0);
-document.getElementById("streakDisplay").innerText = "Current Streak: 0";
+if(d.day%7==0){
+generateChallenge();
 }
 
-window.onload = function() {
-document.getElementById("day").value = localStorage.getItem("day") || "";
-document.getElementById("weight").value = localStorage.getItem("weight") || "";
-document.getElementById("protein").value = localStorage.getItem("protein") || "";
-document.getElementById("calories").value = localStorage.getItem("calories") || "";
-document.getElementById("workout").value = localStorage.getItem("workout") || "";
-document.getElementById("pr").value = localStorage.getItem("pr") || "";
-let streak = localStorage.getItem("streak") || 0;
-document.getElementById("streakDisplay").innerText = "Current Streak: " + streak;
+load();
+}
+
+function generateChallenge(){
+let challenges=[
+"Complete 50 total pull-ups today.",
+"100 pushups before bed.",
+"Hold plank for 2 minutes.",
+"Sprint 10x20m.",
+"Do 30 pull-ups in as few sets as possible."
+];
+let random=challenges[Math.floor(Math.random()*challenges.length)];
+localStorage.setItem("challenge",random);
+}
+
+function generateWorkout(){
+let workout="Hypertrophy Focus:\n3x8-12 Pushups\n3x8-12 Pull-ups\n3x10-15 Squats\n3x12 Lunges";
+localStorage.setItem("workout",workout);
+}
+
+function getNextTest(day){
+if(day<30)return "Day 30";
+if(day<60)return "Day 60";
+if(day<90)return "Day 90";
+return "Complete";
+}
+
+function showPage(page){
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+document.getElementById(page).classList.add("active");
+}
+
+window.onload=function(){
+if(localStorage.getItem("data")){
+document.getElementById("quiz").classList.remove("active");
+document.getElementById("dashboard").classList.add("active");
+document.getElementById("navbar").style.display="flex";
+load();
+}
 }
 
 </script>
-
 </body>
 </html>
