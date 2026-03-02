@@ -3,213 +3,349 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>90 Day Builder ELITE</title>
+<title>Final Form Builder</title>
 
 <style>
-body{margin:0;font-family:system-ui;background:#0f0f0f;color:white;}
-header{padding:18px;text-align:center;font-weight:bold;background:#121212;border-bottom:1px solid #222;}
-nav{display:flex;justify-content:space-around;background:#111;padding:12px;position:fixed;bottom:0;width:100%;border-top:1px solid #222;}
-nav button{background:none;border:none;color:white;font-size:13px;}
-.page{display:none;padding:20px;padding-bottom:100px;}
-.active{display:block;}
-.card{background:#1a1a1a;padding:15px;border-radius:14px;margin-bottom:15px;}
-input,select,textarea{width:100%;padding:10px;margin-top:6px;border-radius:10px;border:none;background:#222;color:white;}
-button.primary{background:#00ff99;border:none;padding:12px;border-radius:12px;margin-top:12px;font-weight:bold;}
-h2{margin-top:0;}
-.badge{padding:6px 10px;border-radius:10px;background:#00ff99;color:black;display:inline-block;margin-top:5px;font-size:12px;}
+
+body{
+margin:0;
+font-family:system-ui;
+background:radial-gradient(circle at top,#0f0f0f,#000);
+color:white;
+}
+
+header{
+padding:26px;
+text-align:center;
+font-size:24px;
+font-weight:800;
+}
+
+nav{
+position:fixed;
+bottom:0;
+width:100%;
+display:flex;
+justify-content:space-around;
+background:#080808;
+padding:14px;
+border-top:1px solid #222;
+}
+
+nav button{
+background:none;
+border:none;
+color:white;
+font-size:13px;
+cursor:pointer;
+}
+
+.page{
+display:none;
+padding:26px;
+padding-bottom:160px;
+}
+
+.active{
+display:block;
+}
+
+.card{
+background:rgba(255,255,255,0.04);
+padding:24px;
+border-radius:26px;
+margin-bottom:24px;
+backdrop-filter:blur(12px);
+}
+
+button.primary{
+width:100%;
+background:linear-gradient(45deg,#00ffaa,#00aaff);
+border:none;
+padding:16px;
+border-radius:18px;
+font-weight:bold;
+margin-top:14px;
+cursor:pointer;
+}
+
+.progressBar{
+height:14px;
+background:#222;
+border-radius:12px;
+overflow:hidden;
+margin-top:12px;
+}
+
+.progressFill{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#00ffaa,#00ccff);
+transition:width .8s ease;
+}
+
+input,select,textarea{
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:14px;
+border:none;
+background:#181818;
+color:white;
+}
+
 </style>
 </head>
 
 <body>
 
-<header>90 Day Builder ELITE</header>
+<header>🌌 Final Form Builder</header>
 
-<!-- QUIZ -->
-<div id="quiz" class="page active">
-<h2>Initial Performance Assessment</h2>
+<!-- HOME DASHBOARD -->
+<div id="home" class="page active">
+
 <div class="card">
+<h2>Performance Status</h2>
 
-<label>Training Experience</label>
-<select id="experience">
-<option>Beginner</option>
-<option>Intermediate</option>
-<option>Advanced</option>
-</select>
-
-<label>Primary Goal</label>
-<select id="goal">
-<option>Physique (Muscle)</option>
-<option>Strength</option>
-<option>Athletic Hybrid</option>
-</select>
-
-<label>Equipment</label>
-<select id="equipment">
-<option>Bodyweight Only</option>
-<option>Bodyweight + Dumbbells</option>
-<option>Full Gym</option>
-</select>
-
-<label>Bodyweight (lbs)</label>
-<input id="bw" type="number">
-
-<label>Max Pushups</label>
-<input id="pushups" type="number">
-
-<label>Max Pull-Ups</label>
-<input id="pullups" type="number">
-
-<label>Broad Jump (inches)</label>
-<input id="jump" type="number">
-
-<label>Plank (seconds)</label>
-<input id="plank" type="number">
-
-<button class="primary" onclick="initialize()">Start 90 Day Build</button>
-</div>
-</div>
-
-<!-- DASHBOARD -->
-<div id="dashboard" class="page">
-<h2>Dashboard</h2>
-<div class="card">
 <p id="dayDisplay"></p>
-<p id="tierDisplay"></p>
-<p id="streakDisplay"></p>
-<p id="challengeDisplay"></p>
-<button class="primary" onclick="increaseDay()">Complete Day</button>
-</div>
-</div>
+<p id="phaseDisplay"></p>
+<p id="scoreDisplay"></p>
 
-<!-- TRAINING -->
-<div id="training" class="page">
-<h2>Today's Focus</h2>
-<div class="card">
 <p id="workoutDisplay"></p>
-</div>
+
+<p style="color:#00ffaa" id="hintDisplay"></p>
+
+<button class="primary" onclick="completeSession()">
+Complete Training Session
+</button>
+
 </div>
 
-<!-- PROGRESS -->
-<div id="progress" class="page">
-<h2>Performance</h2>
 <div class="card">
-<p id="baselineDisplay"></p>
-<p id="nextTestDisplay"></p>
-</div>
+<h2>Adaptive Volume Tracking</h2>
+
+<p>Push Performance</p>
+<div class="progressBar"><div id="pushBar" class="progressFill"></div></div>
+
+<p>Pull Performance</p>
+<div class="progressBar"><div id="pullBar" class="progressFill"></div></div>
+
 </div>
 
-<nav id="navbar" style="display:none;">
-<button onclick="showPage('dashboard')">Home</button>
-<button onclick="showPage('training')">Train</button>
-<button onclick="showPage('progress')">Progress</button>
+</div>
+
+<!-- LOG PAGE -->
+<div id="log" class="page">
+
+<div class="card">
+<h2>Log Training</h2>
+
+<select id="exercise">
+<option>Pushups</option>
+<option>Pullups</option>
+<option>Squats</option>
+<option>PlankSeconds</option>
+</select>
+
+<input id="reps" type="number" placeholder="Reps or Seconds">
+
+<button class="primary" onclick="logTraining()">Save Log</button>
+
+</div>
+
+</div>
+
+<!-- WORKOUT PAGE -->
+<div id="workoutPage" class="page">
+
+<div class="card">
+<h2>Generated Training</h2>
+<p id="splitWorkout"></p>
+</div>
+
+</div>
+
+<nav>
+<button onclick="showPage('home')">Home</button>
+<button onclick="showPage('log')">Log</button>
+<button onclick="showPage('workoutPage')">Workout</button>
 </nav>
 
 <script>
 
-function initialize(){
-let data={
-experience:experience.value,
-goal:goal.value,
-equipment:equipment.value,
-bw:bw.value,
-pushups:pushups.value,
-pullups:pullups.value,
-jump:jump.value,
-plank:plank.value,
-day:1,
-streak:0
+/* ===== CORE ===== */
+
+let BASELINE={
+pushups:40,
+pullups:10
 };
-localStorage.setItem("data",JSON.stringify(data));
+
+function getLogs(){
+return JSON.parse(localStorage.getItem("logs")||"{}");
+}
+
+function saveLogs(l){
+localStorage.setItem("logs",JSON.stringify(l));
+}
+
+/* ===== PHASE MODEL ===== */
+
+function getPhase(day){
+
+if(day<30) return "Foundation Adaptation Phase";
+if(day<60) return "Growth Loading Phase";
+if(day<90) return "Peak Performance Phase";
+
+return "Maintenance Phase";
+}
+
+/* ===== WORKOUT ENGINE ===== */
+
+function generateWorkout(day){
+
+let workout;
+
+if(day<30){
+workout=
+"Foundation Session\n"+
+"3x8 Pushups\n"+
+"3x6 Pullups\n"+
+"3x10 Squats\n"+
+"3x30s Plank";
+}
+
+else if(day<60){
+workout=
+"Growth Session\n"+
+"3x12 Pushups\n"+
+"4x8 Pullups\n"+
+"3x12 Lunges\n"+
+"Core Stability Work";
+}
+
+else{
+workout=
+"Peak Session\n"+
+"Backpack Pushups\n"+
+"Controlled Pullups\n"+
+"Explosive Movement Training";
+}
+
+localStorage.setItem("workout",workout);
+splitWorkout.innerText=workout;
+}
+
+/* ===== PERFORMANCE SCORE ===== */
+
+function calculateScore(){
+
+let logs=getLogs();
+
+let push=logs["Pushups"]||0;
+let pull=logs["Pullups"]||0;
+
+return Math.floor(
+(push/BASELINE.pushups)*50 +
+(pull/BASELINE.pullups)*50
+);
+}
+
+/* ===== SESSION COMPLETE ===== */
+
+function completeSession(){
+
+let day=parseInt(localStorage.getItem("day")||"1");
+day++;
+
+localStorage.setItem("day",day);
+
+if(day%7===0){
 generateChallenge();
-generateWorkout();
-document.getElementById("quiz").classList.remove("active");
-document.getElementById("dashboard").classList.add("active");
-document.getElementById("navbar").style.display="flex";
-load();
 }
 
-function load(){
-let d=JSON.parse(localStorage.getItem("data"));
-if(!d)return;
-
-dayDisplay.innerText="Day: "+d.day+"/90";
-streakDisplay.innerText="Streak: "+d.streak;
-
-tierDisplay.innerHTML="Pull-Up Tier: "+getTier(d.pullups)+" <div class='badge'>"+getTier(d.pullups)+"</div>";
-
-challengeDisplay.innerText="Weekly Challenge: "+localStorage.getItem("challenge");
-
-baselineDisplay.innerText="Baseline Pushups: "+d.pushups+" | Pullups: "+d.pullups+" | Jump: "+d.jump+" | Plank: "+d.plank+"s";
-
-nextTestDisplay.innerText="Next Test Day: "+getNextTest(d.day);
-
-workoutDisplay.innerText=localStorage.getItem("workout");
+loadUI();
 }
 
-function getTier(pullups){
-if(pullups>=25)return "Savage";
-if(pullups>=20)return "Elite";
-if(pullups>=15)return "Advanced";
-if(pullups>=10)return "Trained";
-if(pullups>=5)return "Novice";
-return "Beginner";
+/* ===== TRAINING LOG ===== */
+
+function logTraining(){
+
+let ex=exercise.value;
+let reps=parseInt(reps.value);
+
+if(!reps) return;
+
+let logs=getLogs();
+logs[ex]=(logs[ex]||0)+reps;
+
+saveLogs(logs);
+
+updateBars();
+alert("Logged!");
 }
 
-function increaseDay(){
-let d=JSON.parse(localStorage.getItem("data"));
-d.day++;
-d.streak++;
-localStorage.setItem("data",JSON.stringify(d));
+/* ===== VISUALIZATION ===== */
 
-if(d.day==30||d.day==60||d.day==90){
-alert("🔥 Performance Re-Test Day! Re-measure everything.");
+function updateBars(){
+
+let logs=getLogs();
+
+let push=logs["Pushups"]||0;
+let pull=logs["Pullups"]||0;
+
+pushBar.style.width=Math.min(push/BASELINE.pushups*100,100)+"%";
+pullBar.style.width=Math.min(pull/BASELINE.pullups*100,100)+"%";
+
 }
 
-if(d.day%7==0){
-generateChallenge();
-}
-
-load();
-}
+/* ===== CHALLENGES ===== */
 
 function generateChallenge(){
-let challenges=[
-"Complete 50 total pull-ups today.",
-"100 pushups before bed.",
-"Hold plank for 2 minutes.",
-"Sprint 10x20m.",
-"Do 30 pull-ups in as few sets as possible."
+
+let list=[
+"🔥 50 pushups today",
+"🔥 20 pullups today",
+"🔥 2 minute plank",
+"🔥 Sprint interval work",
+"🔥 Jump training practice"
 ];
-let random=challenges[Math.floor(Math.random()*challenges.length)];
-localStorage.setItem("challenge",random);
+
+localStorage.setItem(
+"hint",
+list[Math.floor(Math.random()*list.length)]
+);
 }
 
-function generateWorkout(){
-let workout="Hypertrophy Focus:\n3x8-12 Pushups\n3x8-12 Pull-ups\n3x10-15 Squats\n3x12 Lunges";
-localStorage.setItem("workout",workout);
-}
+/* ===== UI ===== */
 
-function getNextTest(day){
-if(day<30)return "Day 30";
-if(day<60)return "Day 60";
-if(day<90)return "Day 90";
-return "Complete";
+function loadUI(){
+
+let day=localStorage.getItem("day")||1;
+
+dayDisplay.innerText="Day "+day+"/90";
+phaseDisplay.innerText=getPhase(day);
+
+workoutDisplay.innerText=localStorage.getItem("workout");
+
+scoreDisplay.innerText="Performance Score: "+calculateScore();
+
+hintDisplay.innerText=localStorage.getItem("hint")||"";
+
+generateWorkout(day);
+
 }
 
 function showPage(page){
-document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+
+document.querySelectorAll(".page")
+.forEach(p=>p.classList.remove("active"));
+
 document.getElementById(page).classList.add("active");
 }
 
-window.onload=function(){
-if(localStorage.getItem("data")){
-document.getElementById("quiz").classList.remove("active");
-document.getElementById("dashboard").classList.add("active");
-document.getElementById("navbar").style.display="flex";
-load();
-}
-}
+window.onload=loadUI;
 
 </script>
+
 </body>
 </html>
