@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>90 Day Builder</title>
+<style>
+body { font-family: Arial; padding:20px; background:#111; color:white; }
+input, button, textarea { width:100%; padding:10px; margin:5px 0; border-radius:8px; border:none; }
+button { background:#00ff99; font-weight:bold; }
+.card { background:#222; padding:15px; border-radius:12px; margin-bottom:15px; }
+h1 { text-align:center; }
+</style>
+</head>
+<body>
+
+<h1>90 Day Builder</h1>
+
+<div class="card">
+<h2>Dashboard</h2>
+<input id="day" placeholder="Day #">
+<input id="weight" placeholder="Bodyweight">
+<input id="protein" placeholder="Protein Goal">
+<input id="calories" placeholder="Calories Goal">
+<button onclick="saveDashboard()">Save Dashboard</button>
+</div>
+
+<div class="card">
+<h2>Workout Log</h2>
+<textarea id="workout" rows="6" placeholder="Log workout here..."></textarea>
+<button onclick="saveWorkout()">Save Workout</button>
+</div>
+
+<div class="card">
+<h2>PR Log</h2>
+<textarea id="pr" rows="4" placeholder="New PRs..."></textarea>
+<button onclick="savePR()">Save PR</button>
+</div>
+
+<div class="card">
+<h2>Streak</h2>
+<p id="streakDisplay"></p>
+<button onclick="increaseStreak()">+1 Perfect Day</button>
+<button onclick="resetStreak()">Reset</button>
+</div>
+
+<script>
+
+function saveDashboard() {
+localStorage.setItem("day", document.getElementById("day").value);
+localStorage.setItem("weight", document.getElementById("weight").value);
+localStorage.setItem("protein", document.getElementById("protein").value);
+localStorage.setItem("calories", document.getElementById("calories").value);
+alert("Dashboard Saved");
+}
+
+function saveWorkout() {
+localStorage.setItem("workout", document.getElementById("workout").value);
+alert("Workout Saved");
+}
+
+function savePR() {
+localStorage.setItem("pr", document.getElementById("pr").value);
+alert("PR Saved");
+}
+
+function increaseStreak() {
+let streak = localStorage.getItem("streak") || 0;
+streak++;
+localStorage.setItem("streak", streak);
+document.getElementById("streakDisplay").innerText = "Current Streak: " + streak;
+}
+
+function resetStreak() {
+localStorage.setItem("streak", 0);
+document.getElementById("streakDisplay").innerText = "Current Streak: 0";
+}
+
+window.onload = function() {
+document.getElementById("day").value = localStorage.getItem("day") || "";
+document.getElementById("weight").value = localStorage.getItem("weight") || "";
+document.getElementById("protein").value = localStorage.getItem("protein") || "";
+document.getElementById("calories").value = localStorage.getItem("calories") || "";
+document.getElementById("workout").value = localStorage.getItem("workout") || "";
+document.getElementById("pr").value = localStorage.getItem("pr") || "";
+let streak = localStorage.getItem("streak") || 0;
+document.getElementById("streakDisplay").innerText = "Current Streak: " + streak;
+}
+
+</script>
+
+</body>
+</html>
