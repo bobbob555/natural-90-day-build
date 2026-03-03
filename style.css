@@ -1,1 +1,98 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #0f0f0f;
+    color: white;
+}
 
+header {
+    padding: 20px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.container {
+    padding: 20px;
+}
+
+.card {
+    background: #1c1c1e;
+    border-radius: 20px;
+    padding: 18px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.02);
+}
+
+.red {
+    background: #ff2d2d;
+}
+
+button {
+    background: #ff2d2d;
+    border: none;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.days {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.day {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: #2a2a2a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.active-day {
+    background: #ff2d2d;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #1c1c1e;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+
+.bottom-nav a {
+    color: gray;
+    text-decoration: none;
+}
+
+.bottom-nav a.active {
+    color: #ff2d2d;
+}
+
+.fox {
+    font-size: 60px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.speech {
+    background: white;
+    color: black;
+    padding: 12px;
+    border-radius: 14px;
+    margin-top: 10px;
+}
