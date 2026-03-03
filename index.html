@@ -1,160 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>90 Day Calisthenics</title>
-<style>
-body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #111, #1c1c1c);
-    color: white;
-}
-
-.container {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-}
-
-.card {
-    background: #1f1f1f;
-    padding: 20px;
-    border-radius: 16px;
-    margin-bottom: 20px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-}
-
-button {
-    background: #ff7b00;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 10px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    margin: 5px 0;
-}
-
-button:hover {
-    background: #ff9500;
-}
-
-input {
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-h1, h2 {
-    text-align: center;
-}
-
-.nav {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-}
-
-.hidden {
-    display: none;
-}
-
-.fox {
-    font-size: 60px;
-    text-align: center;
-}
-
-.speech {
-    background: white;
-    color: black;
-    padding: 15px;
-    border-radius: 12px;
-    margin-top: 10px;
-}
-
-.progress-bar {
-    background: #333;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 10px;
-}
-
-.progress-fill {
-    background: #ff7b00;
-    height: 20px;
-    width: 0%;
-}
-</style>
+<title>90 Day Challenge</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<header>90 DAY CHALLENGE</header>
+
 <div class="container">
 
-<h1>🔥 90 Day Challenge</h1>
+<h3>Select Program</h3>
 
-<div class="nav">
-<button onclick="showPage('home')">Home</button>
-<button onclick="showPage('workout')">Workout</button>
-<button onclick="showPage('progress')">Progress</button>
+<div class="card red" onclick="selectProgram('ppl')">
+Push Pull Legs
 </div>
 
-<!-- HOME PAGE -->
-<div id="home" class="card">
-
-<h2>Select Equipment</h2>
-<label><input type="checkbox" id="dipBar"> Dip Bar</label><br>
-<label><input type="checkbox" id="pullUpBar"> Pull Up Bar</label>
-
-<h2>Select Program</h2>
-<select id="program">
-<option value="ppl">Push Pull Legs</option>
-<option value="upperlower">Upper Lower</option>
-<option value="fullbody">Full Body</option>
-<option value="brosplit">Bro Split</option>
-<option value="pplskills">PPL + Skills</option>
-</select>
-
-<button onclick="startAssessment()">Start 90 Day Challenge</button>
-
+<div class="card" onclick="selectProgram('upperlower')">
+Upper Lower
 </div>
 
-<!-- ASSESSMENT -->
-<div id="assessment" class="card hidden">
-<h2>Base Skills Assessment</h2>
-<input type="number" id="pushups" placeholder="Max Pushups">
-<input type="number" id="pullups" placeholder="Max Pullups">
-<input type="number" id="plank" placeholder="Plank (seconds)">
-<button onclick="generateProgram()">Generate My Plan</button>
+<div class="card" onclick="selectProgram('fullbody')">
+Full Body
 </div>
 
-<!-- WORKOUT PAGE -->
-<div id="workout" class="card hidden">
-<h2>Today's Workout</h2>
-<div id="workoutList"></div>
+<div class="card" onclick="selectProgram('brosplit')">
+Bro Split
 </div>
 
-<!-- PROGRESS PAGE -->
-<div id="progress" class="card hidden">
-<h2>Progress</h2>
-<div id="progressList"></div>
-</div>
-
-<!-- FOX -->
-<div class="card">
-<div class="fox">🦊</div>
-<div class="speech" id="foxSpeech">
-Hi. I'm 90. Let's build you into a monster in 90 days.
-</div>
+<div class="card" onclick="selectProgram('pplskills')">
+PPL + Skills
 </div>
 
 </div>
 
-<script>
-let state = {
-    program: null,
-    equipment: {},
-    assessment: {},
+<script src="app.js"></script>
+</body>
+</html>
